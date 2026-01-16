@@ -12,7 +12,7 @@ int main()
 
    for(auto &s : names)
    {
-      std::cout << s << std::endl;
+      std::cout << s << std::endl
    }
 
    return 0;

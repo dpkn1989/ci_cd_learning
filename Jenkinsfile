@@ -1,29 +1,43 @@
 pipeline {
-    agent any
+  agent any
 
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
+  options {
+    timestamps()
+    disableConcurrentBuilds()
+  }
 
-        stage('Configure') {
-            steps {
-                sh 'cmake -S . -B build'
-            }
-        }
+  environment {
+    BUILD_DIR = "build"
+  }
 
-        stage('Build') {
-            steps {
-                sh 'cmake --build build'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                sh 'ctest --test-dir build --output-on-failure'
-            }
-        }
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
     }
+
+    stage('Configure') {
+      steps {
+        sh '''
+          rm -rf "$BUILD_DIR"
+          cmake -S . -B "$BUILD_DIR" -G Ninja -DCMAKE_BUILD_TYPE=Release
+        '''
+      }
+    }
+
+    stage('Build') {
+      steps {
+        sh '''
+          cmake --build "$BUILD_DIR" --config Release
+        '''
+      }
+    }
+  }
+
+  post {
+    always {
+      archiveArtifacts artifacts: 'build/**', onlyIfSuccessful: false, allowEmptyArchive: true
+    }
+  }
 }

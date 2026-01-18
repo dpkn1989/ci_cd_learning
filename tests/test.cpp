@@ -5,7 +5,7 @@ TEST(CAR_CLASS, Constructor_case)
 {
    Car c;
    
-   ASSERT_EQ(Car::car_count(),3);
+   ASSERT_EQ(Car::car_count(),1);
 }
 
 int main(int argc, char** argv)

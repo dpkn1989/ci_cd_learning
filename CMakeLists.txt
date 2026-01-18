@@ -4,4 +4,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 project(ci_cd_example VERSION 1.0.0 LANGUAGES CXX)
 
-add_executable(ci_cd_example src/main.cpp)
+add_executable(ci_cd_example src/main.cpp
+                             src/Car.cpp)
+                             
+target_include_directories(ci_cd_example PUBLIC ${CMAKE_SOURCE_DIR}/include)
